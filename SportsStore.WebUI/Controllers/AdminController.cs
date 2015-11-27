@@ -2,15 +2,19 @@
 using System.Linq;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Entities;
+using SportsStore.WebUI.Infrastructure.Abstract;
 
 namespace SportsStore.WebUI.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private IProductsRepository repository;
+        private IAuthProvider authProvider;
 
-        public AdminController(IProductsRepository repository) {
+        public AdminController(IProductsRepository repository, IAuthProvider authProvider) {
             this.repository = repository;
+            this.authProvider = authProvider;
         }
 
         public ViewResult Index() {
@@ -43,6 +47,28 @@ namespace SportsStore.WebUI.Controllers
                 // there is somthing wrong with the data
                 return View(product);
             }
+        }
+
+        public ViewResult Create() {
+            return View("Edit", new Product());
+        }
+
+        [HttpPost]
+        public ActionResult Delete (int productId) {
+            Product deletedProduct = repository.DeleteProduct(productId);
+
+            if(deletedProduct != null) {
+                TempData["successMessage"] = string.Format("{0} has been deleted", deletedProduct.Name);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Logout() {
+            authProvider.SignOut();
+
+            return Redirect(Url.Action("List", "Product"));
         }
     }
 }

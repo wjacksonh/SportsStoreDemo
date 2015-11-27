@@ -24,7 +24,7 @@ namespace SportsStore.UnitTests {
             });
 
             // Arrange - create the controller
-            AdminController target = new AdminController(mock.Object);
+            AdminController target = new AdminController(mock.Object, null);
 
             // Action
             Product[] result = ((IEnumerable<Product>)target.Index().ViewData.Model).ToArray();
@@ -48,7 +48,7 @@ namespace SportsStore.UnitTests {
             });
 
             // Arrange - create the controller
-            AdminController target = new AdminController(mock.Object);
+            AdminController target = new AdminController(mock.Object, null);
 
             // Act
             Product p1 = target.Edit(1).ViewData.Model as Product;
@@ -77,7 +77,7 @@ namespace SportsStore.UnitTests {
             });
 
             // Arrange - create the controller
-            AdminController target = new AdminController(mock.Object);
+            AdminController target = new AdminController(mock.Object, null);
 
             // Act
             Product p5 = target.Edit(5).ViewData.Model as Product;
@@ -92,7 +92,7 @@ namespace SportsStore.UnitTests {
             // Arrange - create mock repository
             Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
             // Arrange - create the controller
-            AdminController target = new AdminController(mock.Object);
+            AdminController target = new AdminController(mock.Object, null);
             // arrange - create a new product
             Product product = new Product { Name = "Test" };
 
@@ -111,7 +111,7 @@ namespace SportsStore.UnitTests {
             // Arrange - create mock repository
             Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
             // Arrange - create the controller
-            AdminController target = new AdminController(mock.Object);
+            AdminController target = new AdminController(mock.Object, null);
             // Arrange - create a new product
             Product product = new Product { Name = "Test" };
             // Arrange - add an error to the model state
@@ -124,6 +124,44 @@ namespace SportsStore.UnitTests {
             mock.Verify(m => m.SaveProduct(It.IsAny<Product>()), Times.Never());
             // Assert - check method result type
             Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public void Can_Cancel_Edit() {
+
+            // Arrange - create mock repository
+            Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
+            // Arrange - create the controller
+            AdminController target = new AdminController(mock.Object, null);
+            // arrange - create a new product
+            Product product = new Product { Name = "Test" };
+
+            // Act - try to cancel the edit
+            ActionResult result = target.Cancel(product.Name);
+
+            // Assert - check method result type
+            Assert.IsNotInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public void Can_Delete_Valid_Products() {
+
+            Product prod = new Product { ProductID = 2, Name = "P2" };
+            // Arrange  - Create the Mock repository
+            Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[] {
+                new Product {ProductID = 1, Name = "P1" },
+                prod,
+                new Product {ProductID = 3, Name = "P3" },
+            });
+
+            // Arrange - create the controller
+            AdminController target = new AdminController(mock.Object, null);
+
+            // Act - delete the product
+            target.Delete(2);
+            // Assert - asure that the prodcut was deleted
+            mock.Verify(m => m.DeleteProduct(prod.ProductID));
         }
     }
 }

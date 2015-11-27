@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Admin: Edit " + Model.Name;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    HtmlHelper.ClientValidationEnabled = true;
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = true;
 }
 
 
@@ -11,7 +13,7 @@
         <h3>Edit @Model.Name</h3>
     </div>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm("Edit", "Admin")) {
         <div class="panel-body">
             @Html.HiddenFor(m => m.ProductID)
             @foreach (var property in ViewData.ModelMetadata.Properties) {
@@ -23,6 +25,8 @@
                         } else {
                             @Html.TextArea(property.PropertyName, null, new { @class = "form-control" })
                         }
+
+                        @Html.ValidationMessage(property.PropertyName)
                     </div>
                 }
             }
