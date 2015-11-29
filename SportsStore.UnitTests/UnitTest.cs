@@ -13,7 +13,7 @@ using System.Web.Mvc;
 namespace SportsStore.UnitTests {
 
     [TestClass]
-    public class UnitTest1 {
+    public class UnitTest {
 
         private Mock<IProductsRepository> CreateMockProductRepository () {
             Mock<IProductsRepository> mock = new Mock<IProductsRepository>();

@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Linq;
+using System.Web;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Entities;
 using SportsStore.WebUI.Infrastructure.Abstract;
@@ -36,8 +37,15 @@ namespace SportsStore.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Product product) {
+        public ActionResult Edit(Product product, HttpPostedFileBase image = null) {
             if (ModelState.IsValid) {
+                if(image != null) {
+                    product.ImageMimeType = image.ContentType;
+                    product.ImageData = new byte[image.ContentLength];
+
+                    image.InputStream.Read(product.ImageData, 0, image.ContentLength);
+                }
+
                 repository.SaveProduct(product);
 
                 TempData["successMessage"] = string.Format("{0} has been saved", product.Name);
