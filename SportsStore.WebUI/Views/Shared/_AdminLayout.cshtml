@@ -14,14 +14,21 @@
     <script src="~/Scripts/jquery-1.10.2.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
     <title></title>
 </head>
 <body>
     <div> 
         @if(TempData["successMessage"] != null) {
-            <div class="alert alert-success">@TempData["successMessage"]</div>
+            <div class="alert alert-success fade in">
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">&times;</button>
+                @TempData["successMessage"]
+            </div>
         } else if (TempData["cancelMessage"] != null) {
-            <div class="alert alert-info">@TempData["cancelMessage"]</div>
+            <div class="alert alert-info fade in">
+               <button type="button" class="close" data-dismiss="alert" aria-label="close">&times;</button>
+                @TempData["cancelMessage"]
+            </div>
         }
         @RenderBody()
     </div>
