@@ -8,15 +8,18 @@ namespace SportsStore.Domain.Concrete {
 
     public class EmailSettings {
 
-        public string MailToAddress   = "wjackson_h@charter.net";
-        public string MailFromAddress = "wjacksonh8@gmail.com";
+        // Removead all alctual email info for submission to public repository
+        // This is for demo purposes only.
+
+        public string MailToAddress   = "mytoemail@myto.net";
+        public string MailFromAddress = "mytoemail@myto.com";
         public bool   UseSsl          = true;
-        public string Username        = "wjacksonh8";
-        public string Password        = "M**nchild0";
-        public string ServerName      = "smtp.gmail.com";
+        public string Username        = "username";
+        public string Password        = "passworrd";
+        public string ServerName      = "smtp.myto.com";
         public int    ServerPort      = 25;
         public bool   WriteAsFile     = false;
-        public string FileLocation    = @"C:\Users\Walter\Source\Repos\SportsStore\sports_store_emails";
+        public string FileLocation    = @"C:\sports_store_emails";
     }
 
 

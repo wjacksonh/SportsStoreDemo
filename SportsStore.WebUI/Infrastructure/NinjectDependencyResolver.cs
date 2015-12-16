@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using Ninject;
+using Ninject.Web.Common;
 using System.Web.Mvc;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Concrete;
@@ -13,7 +14,7 @@ namespace SportsStore.WebUI.Infrastructure {
         private IKernel kernal;
 
         private void AddBindings () {
-            kernal.Bind<IProductsRepository> ().To<EFProductRepository> ();
+            kernal.Bind<IProductsRepository> ().To<EFProductRepository> ().InRequestScope();
 
             EmailSettings emailSettings = new EmailSettings {
                 WriteAsFile = bool.Parse(ConfigurationManager

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Entities;
 
 namespace SportsStore.Domain.Concrete {
-    public class EFProductRepository : IProductsRepository {
+    public sealed class EFProductRepository : IProductsRepository, IDisposable {
         private EFDbContext context = new EFDbContext();
 
         public IEnumerable<Product> Products {
@@ -41,6 +39,11 @@ namespace SportsStore.Domain.Concrete {
                 }
             }
             context.SaveChanges();
+        }
+
+        public void Dispose() {
+            if (context != null)
+                context.Dispose();
         }
     }
 }
